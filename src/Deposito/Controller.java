@@ -1,14 +1,20 @@
 package Deposito;
 
-import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
-public class Controller extends JPanel{
+import Interfaces.PObserve;
+import Interfaces.PObserver;
+import Sistema.Sistema;
+
+public class Controller extends JPanel implements PObserve{
 	private static final long serialVersionUID = 1L;
 	private JButton btn1, btn2, btn3;	
+	private PObserver observador;
 	
 	public Controller(String name1, String name2, String name3) {
 
@@ -25,7 +31,17 @@ public class Controller extends JPanel{
 		this.add(btn3);
 	}
 	
-private final class ColorSwitch implements ActionListener{
+	public void notificar() {
+		Sistema obs = (Sistema) this.observador;
+		obs.update(this.getBackground());
+	}
+	
+	public void enlazarObserver(PObserver observador) {
+		this.observador = observador;		
+	}
+	
+	
+	private final class ColorSwitch implements ActionListener{
 
 		public void actionPerformed(ActionEvent e) {
 					
@@ -45,7 +61,12 @@ private final class ColorSwitch implements ActionListener{
 				contenedor.setBackground(Color.GREEN);
 				
 			}
+			contenedor.notificar();
 		}		
 	}
+
+
+
+
 }
 
